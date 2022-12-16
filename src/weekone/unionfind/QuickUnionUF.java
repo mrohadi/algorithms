@@ -1,4 +1,4 @@
-package week1;
+package weekone.unionfind;
 
 // import analysis_algo.Stopwatch;
 import edu.princeton.cs.algs4.StdIn;

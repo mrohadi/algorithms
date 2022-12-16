@@ -1,4 +1,4 @@
-package week1.percolation;
+package weekone.unionfind.percolation;
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
