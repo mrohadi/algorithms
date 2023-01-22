@@ -1,5 +1,7 @@
 package weektwo;
 
+import java.util.NoSuchElementException;
+
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
@@ -28,14 +30,19 @@ public class ResizingCapacityQueueOfString {
     public void enqueue(String item) {
         if (size == s.length) resizingArray(s.length * 2);
         s[last++] = item;
+        // if (last == s.length) last = 0;
         size++;
         StdOut.println("enqueue => Size: " + size + " | Length: " + s.length + " | Last: " + last + " | First: " + first);
     } 
 
     public String dequeue() {
-        String item = s[first++];
-        if (size == (s.length / 4)) resizingArray(s.length / 2);
+        if (isEmpty()) throw new NoSuchElementException();
+        String item = s[first];
+        s[first] = null;
         size--;
+        first++;
+        if (first == s.length) first = 0;
+        if (size == (s.length / 4)) resizingArray(s.length / 2);
         StdOut.println("dequeue => Size: " + size + " | Length: " + s.length + " | Last: " + last + " | First: " + first);
         return item;
     }
@@ -43,11 +50,11 @@ public class ResizingCapacityQueueOfString {
     private void resizingArray(int capacity) {
         String[] newArr = new String[capacity];
         for (int i = 0; i < size; i++) {
-            newArr[i] = s[i];
+            newArr[i] = s[(i + first) % s.length];
         }
+        s = newArr; 
         first = 0;
-        last = size - 1;
-        s = newArr;
+        last = size;
     }
 
     public static void main(String[] args) {
