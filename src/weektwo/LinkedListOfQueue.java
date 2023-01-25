@@ -6,38 +6,40 @@ import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class Stack<Item> implements Iterable<Item> {
-
+public class LinkedListOfQueue<Item> implements Iterable<Item> {
     private Node<Item> first;
+    private Node<Item> last;
     private int size;
 
-    public Stack() { 
+    public LinkedListOfQueue() {
         first = null;
+        last = null;
         size = 0;
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return first == null;
     }
 
     public int getSize() {
         return size;
     }
 
-    public void push(Item item) {
-        Node<Item> oldFirst = first;
-        first = new Node<>();
-        first.item = item;
-        first.next = oldFirst;
+    public void enqueue(Item item) {
+        Node<Item> oldLast = last;
+        last = new Node<>();
+        last.item = item;
+        last.next = null;
+        if (isEmpty()) first = last;
+        else
+            oldLast.next = last;
         size++;
     }
 
-    public Item pop() {
+    public void dequeue() {
         if (isEmpty()) throw new NoSuchElementException();
-        Item item = first.item; 
         first = first.next;
         size--;
-        return item;
     }
 
     @Override
@@ -45,8 +47,9 @@ public class Stack<Item> implements Iterable<Item> {
         return new ListIterator();
     }
 
-    private class ListIterator implements Iterator<Item> {
+    private class ListIterator implements Iterator<Item>{
         private Node<Item> current = first;
+
         @Override
         public boolean hasNext() {
             return current != null;
@@ -59,17 +62,19 @@ public class Stack<Item> implements Iterable<Item> {
             current = current.next;
             return item;
         }
+
     }
 
     public static void main(String[] args) {
-        Stack<Integer> stack = new Stack<Integer>();
+        LinkedListOfQueue<Integer> queue = new LinkedListOfQueue<Integer>();
         while (!StdIn.isEmpty()) {
             int num = StdIn.readInt();
-            stack.push(num);
+            queue.enqueue(num);
         }
-        StdOut.println("Size: " + stack.getSize());
-        for (int n : stack) {
-            StdOut.print(n + " ");
+        StdOut.println("Size: " + queue.getSize());
+
+        for (Integer s : queue) {
+            StdOut.println(s);            
         }
     }
 }
